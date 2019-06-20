@@ -53,7 +53,7 @@
         app:backgroundTint="@android:color/white"
          />
 
-   <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
