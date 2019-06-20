@@ -10,11 +10,12 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
-//detects and logs the number of faces in a given bitmap.
+
 public class Emojifier {
 
     private static final String LOG_TAG = Emojifier.class.getSimpleName();
 
+    //this method detects and logs the number of faces in a given bitmap.
     static void detectFaces(Context context, Bitmap pictureBitmap){
         // Create the face detector, disable tracking and enable classifications
         FaceDetector detector = new FaceDetector.Builder(context)
@@ -34,12 +35,27 @@ public class Emojifier {
         // If there are no faces detected, show a Toast message
         if(faces.size() == 0){
             Toast.makeText(context, R.string.no_faces_message, Toast.LENGTH_SHORT).show();
+        } else {
+            for( int i =0; i < faces.size(); i++) {
+                Face face = faces.valueAt(i);
+                //log classification probabilities for each face in the image
+                getClassifications(face);
+            }
         }
 
         // Release the detector
         detector.release();
     }
 
+    //This method logs the classification probabilities of each eye being open and that the person is smiling
+    private static void getClassifications(Face face) {
+        //logging al possible probabilities
+        Log.d(LOG_TAG, "getClassifications: smilingProb = " + face.getIsSmilingProbability());
+        Log.d(LOG_TAG, "getClassifications: leftEyeOpenProb = "
+                + face.getIsLeftEyeOpenProbability());
+        Log.d(LOG_TAG, "getClassifications: rightEyeOpenProb = "
+                + face.getIsRightEyeOpenProbability());
+    }
 
 
 }
