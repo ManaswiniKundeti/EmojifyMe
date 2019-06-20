@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
         //check for image orientation and rotate if necessary
         mResultsBitmap = BitmapUtils.checkImageOrientation(this, mResultsBitmap, mTempPhotoPath);
 
-        //use detectFaces method by passing in the re sampled image
-        Emojifier.detectFaces(this, mResultsBitmap);
+        //Detect faces and overlay appropriate emoji
+        mResultsBitmap = Emojifier.detectFacesandDrawEmoji(this, mResultsBitmap);
 
         // Set the new bitmap to the ImageView
         mImageView.setImageBitmap(mResultsBitmap);
