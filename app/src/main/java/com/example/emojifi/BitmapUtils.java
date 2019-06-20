@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.FileProvider;
@@ -191,5 +193,48 @@ class BitmapUtils {
         Uri photoURI = FileProvider.getUriForFile(context, FILE_PROVIDER_AUTHORITY, imageFile);
         shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
         context.startActivity(shareIntent);
+    }
+
+    /** Image is clicked and a rotated image is being displayed after upload
+     *  check for image orientation and rotate if necessary
+    **/
+    static Bitmap checkImageOrientation(Context context, Bitmap imageBitmap, String photoPath){
+        Bitmap rotatedBitmap = null;
+        try {
+            ExifInterface ei = new ExifInterface(photoPath);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+
+            switch (orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotatedBitmap = rotateImage(imageBitmap, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotatedBitmap = rotateImage(imageBitmap, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotatedBitmap = rotateImage(imageBitmap, 270);
+                    break;
+
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    rotatedBitmap = imageBitmap;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rotatedBitmap;
+    }
+
+    static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
     }
 }

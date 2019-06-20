@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -52,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
         // Bind the views
         mImageView = findViewById(R.id.image_view);
         mEmojifyButton = findViewById(R.id.emojify_button);
-        mShareFab =  findViewById(R.id.share_button);
-        mSaveFab =  findViewById(R.id.save_button);
-        mClearFab =  findViewById(R.id.clear_button);
-        mTitleTextView =  findViewById(R.id.title_text_view);
+        mShareFab = findViewById(R.id.share_button);
+        mSaveFab = findViewById(R.id.save_button);
+        mClearFab = findViewById(R.id.clear_button);
+        mTitleTextView = findViewById(R.id.title_text_view);
     }
 
     /**
@@ -165,7 +167,11 @@ public class MainActivity extends AppCompatActivity {
         // Resample the saved image to fit the ImageView
         mResultsBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
 
-        //use detectFaces method by passing in the resampled image
+        //Image is clicked and a rotated image is being displayed after upload
+        //check for image orientation and rotate if necessary
+        mResultsBitmap = BitmapUtils.checkImageOrientation(this, mResultsBitmap, mTempPhotoPath);
+
+        //use detectFaces method by passing in the re sampled image
         Emojifier.detectFaces(this, mResultsBitmap);
 
         // Set the new bitmap to the ImageView
@@ -219,4 +225,6 @@ public class MainActivity extends AppCompatActivity {
         // Delete the temporary image file
         BitmapUtils.deleteImageFile(this, mTempPhotoPath);
     }
+
+
 }

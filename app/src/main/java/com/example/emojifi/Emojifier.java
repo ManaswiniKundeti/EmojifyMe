@@ -47,6 +47,7 @@ public class Emojifier {
         detector.release();
     }
 
+    //We have already enabled the classifications feature while creating a faceDetector object.
     //This method logs the classification probabilities of each eye being open and that the person is smiling
     private static void getClassifications(Face face) {
         //logging al possible probabilities
