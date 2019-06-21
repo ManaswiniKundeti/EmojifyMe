@@ -12,6 +12,8 @@ import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
+import timber.log.Timber;
+
 
 public class Emojifier {
 
@@ -39,7 +41,8 @@ public class Emojifier {
         SparseArray<Face> faces = detector.detect(frame);
 
         // Log the number of faces
-        Log.d(LOG_TAG, "detectFaces: number of faces = " + faces.size());
+        //Log.d(LOG_TAG, "detectFaces: number of faces = " + faces.size());
+        Timber.d("detectFaces: number of faces = " + faces.size());
 
         //initialize the result bitmap to original picture
         Bitmap resultBitmap = pictureBitmap;
@@ -147,9 +150,15 @@ public class Emojifier {
     //determine the closest emoji to the expression on the face,
     //based on the person's lips; smile/sad and eyes open/closed.
     private static Emoji identifyEmoji(Face face) {
-        Log.d(LOG_TAG, "whichEmoji: smilingProb = " + face.getIsSmilingProbability());
-        Log.d(LOG_TAG, "whichEmoji: leftEyeOpenProb = " + face.getIsLeftEyeOpenProbability());
-        Log.d(LOG_TAG, "whichEmoji: rightEyeOpenProb = " + face.getIsRightEyeOpenProbability());
+//        Log.d(LOG_TAG, "whichEmoji: smilingProb = " + face.getIsSmilingProbability());
+//        Log.d(LOG_TAG, "whichEmoji: leftEyeOpenProb = " + face.getIsLeftEyeOpenProbability());
+//        Log.d(LOG_TAG, "whichEmoji: rightEyeOpenProb = " + face.getIsRightEyeOpenProbability());
+        Timber.d("whichEmoji: smilingProb = " + face.getIsSmilingProbability());
+        Timber.d("whichEmoji: leftEyeOpenProb = "
+                + face.getIsLeftEyeOpenProbability());
+        Timber.d("whichEmoji: rightEyeOpenProb = "
+                + face.getIsRightEyeOpenProbability());
+
 
 
         boolean smiling = face.getIsSmilingProbability() > SMILING_PROB_THRESHOLD;
@@ -181,7 +190,8 @@ public class Emojifier {
         }
 
         //Log the emoji
-        Log.d(LOG_TAG, "Which emoji ? "+emoji.name());
+        //Log.d(LOG_TAG, "Which emoji ? "+emoji.name());
+        Timber.d("whichEmoji: " + emoji.name());
         return emoji;
     }
 
